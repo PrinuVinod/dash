@@ -204,7 +204,7 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
           <Typography variant="body1" sx={{ color: '#FFFFFF', paddingLeft: '10px' }}>
             Perimeter Security
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, marginLeft: '50px' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, marginLeft: '17px' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: '#2B3563', padding: '15px 15px', borderRadius: 1 }}>
               <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <CircularProgress
@@ -264,7 +264,7 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
           <Typography variant="body1" sx={{ color: '#FFFFFF', paddingLeft: '10px' }}>
             Network Security
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, marginLeft: '50px' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, marginLeft: '27px' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: '#2B3563', padding: '15px 15px', borderRadius: 1 }}>
               <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <CircularProgress
@@ -324,7 +324,7 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
           <Typography variant="body1" sx={{ color: '#FFFFFF', paddingLeft: '10px' }}>
             Endpoint Security
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, marginLeft: '50px' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, marginLeft: '27px' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: '#2B3563', padding: '15px 15px', borderRadius: 1 }}>
               <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <CircularProgress
@@ -384,7 +384,7 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
           <Typography variant="body1" sx={{ color: '#FFFFFF', paddingLeft: '10px' }}>
             Application Security
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, marginLeft: '50px' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, marginLeft: '10px' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: '#2B3563', padding: '15px 15px', borderRadius: 1 }}>
               <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <CircularProgress
