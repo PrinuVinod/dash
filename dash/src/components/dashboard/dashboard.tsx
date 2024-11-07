@@ -1,6 +1,8 @@
 // src/Dashboard.tsx
+
 import React, { useEffect, useState } from 'react';
 import CyberKarmaGPT from '../cyberkarma/cyberkarmagpt';
+import Kar from '../karesults/kar'; // Import the Kar component
 import {
   Box,
   Typography,
@@ -9,6 +11,7 @@ import {
   Divider,
 } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SecurityIcon from '@mui/icons-material/Security';
 import {
@@ -36,6 +39,7 @@ const theme = createTheme({
 const Dashboard: React.FC = () => {
   const [flashingColor, setFlashingColor] = useState('#FE4A4B');
   const [selectedButton, setSelectedButton] = useState<string | null>('Summary'); // Initialize with 'Summary'
+  const [showKarContent, setShowKarContent] = useState(false); // Add state variable
 
   // Set up color flashing effect
   useEffect(() => {
@@ -50,6 +54,11 @@ const Dashboard: React.FC = () => {
 
   const handleButtonClick = (buttonName: string) => {
     setSelectedButton(buttonName); // Update selected button state
+  };
+
+  // Toggle the Knowledge Assessment Results view
+  const toggleKarContent = () => {
+    setShowKarContent((prevShow) => !prevShow);
   };
 
   // Chart Data and Configurations
@@ -107,6 +116,7 @@ const Dashboard: React.FC = () => {
 
         {/* Main Box */}
         <Box
+          onClick={toggleKarContent} // Use toggle function here
           sx={{
             backgroundColor: '#171E40',
             border: '2px solid #AD46F7',
@@ -119,6 +129,7 @@ const Dashboard: React.FC = () => {
             borderRadius: 5,
             position: 'relative',
             top: '10px',
+            cursor: 'pointer', // Change cursor to pointer
           }}
         >
           <Box
@@ -153,99 +164,107 @@ const Dashboard: React.FC = () => {
                 alignItems: 'center',
               }}
             >
-              <KeyboardArrowUpIcon sx={{ fontSize: 24, color: '#FFFFFF' }} />
+              {showKarContent ? (
+                <KeyboardArrowDownIcon sx={{ fontSize: 24, color: '#FFFFFF' }} />
+              ) : (
+                <KeyboardArrowUpIcon sx={{ fontSize: 24, color: '#FFFFFF' }} />
+              )}
             </Box>
           </Box>
         </Box>
 
-        {/* New Box below the main box */}
-        <Box
-          sx={{
-            backgroundColor: '#040D30',
-            border: '2px solid #AD46F7',
-            width: '100%',
-            maxWidth: '95.5vw',
-            marginTop: '20px',
-            borderRadius: 5,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '20px',
-            gap: 4,
-          }}
-        >
-          {/* Button Container */}
+        {/* Conditional Rendering */}
+        {showKarContent ? (
+          <Kar />
+        ) : (
+          // Existing content under the main box
           <Box
             sx={{
+              backgroundColor: '#040D30',
+              border: '2px solid #AD46F7',
+              width: '100%',
+              maxWidth: '95.5vw',
+              marginTop: '20px',
+              borderRadius: 5,
               display: 'flex',
-              flexDirection: 'row',
-              gap: 2,
-              width: 'auto',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '20px',
+              gap: 4,
             }}
           >
-            <Button
-              variant="contained"
-              startIcon={<MenuBookIcon />}
-              onClick={() => handleButtonClick('Summary')}
-              sx={{
-                backgroundColor:
-                  selectedButton === 'Summary' ? '#4C66D1' : '#040D30',
-                color: '#FFFFFF',
-                border: '2px solid #273269',
-                textTransform: 'none',
-                '&:hover': {
-                  backgroundColor:
-                    selectedButton === 'Summary' ? '#4C66D1' : '#040D30',
-                },
-                width: '150px',
-                height: '50px',
-              }}
-            >
-              Summary
-            </Button>
-
-            <Button
-              variant="contained"
-              startIcon={<SecurityIcon />}
-              onClick={() => handleButtonClick('CyberKarma GPT')}
-              sx={{
-                backgroundColor:
-                  selectedButton === 'CyberKarma GPT' ? '#4C66D1' : '#040D30',
-                color: '#FFFFFF',
-                border: '2px solid #273269',
-                textTransform: 'none',
-                '&:hover': {
-                  backgroundColor:
-                    selectedButton === 'CyberKarma GPT' ? '#4C66D1' : '#040D30',
-                },
-                width: '200px',
-                height: '50px',
-              }}
-            >
-              CyberKarma GPT
-            </Button>
-          </Box>
-
-          {/* Divider */}
-          <Divider
-            sx={{
-              width: '100%',
-              backgroundColor: '#AD46F7',
-              height: '2px',
-            }}
-          />
-
-          {/* Conditional Rendering of Charts */}
-          {selectedButton === 'Summary' && (
+            {/* Button Container */}
             <Box
               sx={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
+                display: 'flex',
+                flexDirection: 'row',
                 gap: 2,
-                width: '100%',
+                width: 'auto',
               }}
             >
-              {/* Box 1 with Pie Chart */}
+              <Button
+                variant="contained"
+                startIcon={<MenuBookIcon />}
+                onClick={() => handleButtonClick('Summary')}
+                sx={{
+                  backgroundColor:
+                    selectedButton === 'Summary' ? '#4C66D1' : '#040D30',
+                  color: '#FFFFFF',
+                  border: '2px solid #273269',
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor:
+                      selectedButton === 'Summary' ? '#4C66D1' : '#040D30',
+                  },
+                  width: '150px',
+                  height: '50px',
+                }}
+              >
+                Summary
+              </Button>
+
+              <Button
+                variant="contained"
+                startIcon={<SecurityIcon />}
+                onClick={() => handleButtonClick('CyberKarma GPT')}
+                sx={{
+                  backgroundColor:
+                    selectedButton === 'CyberKarma GPT' ? '#4C66D1' : '#040D30',
+                  color: '#FFFFFF',
+                  border: '2px solid #273269',
+                  textTransform: 'none',
+                  '&:hover': {
+                    backgroundColor:
+                      selectedButton === 'CyberKarma GPT' ? '#4C66D1' : '#040D30',
+                  },
+                  width: '200px',
+                  height: '50px',
+                }}
+              >
+                CyberKarma GPT
+              </Button>
+            </Box>
+
+            {/* Divider */}
+            <Divider
+              sx={{
+                width: '100%',
+                backgroundColor: '#AD46F7',
+                height: '2px',
+              }}
+            />
+
+            {/* Conditional Rendering of Charts */}
+            {selectedButton === 'Summary' && (
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 2,
+                  width: '100%',
+                }}
+              >
+                {/* Box 1 with Pie Chart */}
               <Box
                 sx={{
                   backgroundColor: '#171E40',
@@ -520,14 +539,15 @@ const Dashboard: React.FC = () => {
                   </BarChart>
                 </ResponsiveContainer>
               </Box>
-            </Box>
-          )}
+              </Box>
+            )}
 
-          {/* Render content for CyberKarma GPT */}
-          {selectedButton === 'CyberKarma GPT' && (
-            <CyberKarmaGPT />
-          )}
-        </Box>
+            {/* Render content for CyberKarma GPT */}
+            {selectedButton === 'CyberKarma GPT' && (
+              <CyberKarmaGPT />
+            )}
+          </Box>
+        )}
       </Box>
     </ThemeProvider>
   );
