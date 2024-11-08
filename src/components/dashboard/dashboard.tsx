@@ -1,8 +1,6 @@
-// src/Dashboard.tsx
-
 import React, { useEffect, useState } from 'react';
 import CyberKarmaGPT from '../cyberkarma/cyberkarmagpt';
-import Kar from '../karesults/kar'; // Import the Kar component
+import Kar from '../karesults/kar';
 import {
   Box,
   Typography,
@@ -17,7 +15,6 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SecurityIcon from '@mui/icons-material/Security';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import HelpIcon from '@mui/icons-material/Help';
 import {
   PieChart,
   Pie,
@@ -31,8 +28,8 @@ import {
   YAxis,
   LabelList,
 } from 'recharts';
-import '@fontsource/urbanist'; // Import Urbanist font
-import { createTheme, ThemeProvider } from '@mui/material/styles'; // Import theme components
+import '@fontsource/urbanist';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme({
   typography: {
@@ -42,10 +39,9 @@ const theme = createTheme({
 
 const Dashboard: React.FC = () => {
   const [flashingColor, setFlashingColor] = useState('#FE4A4B');
-  const [selectedButton, setSelectedButton] = useState<string | null>('Summary'); // Initialize with 'Summary'
-  const [showKarContent, setShowKarContent] = useState(false); // Add state variable
+  const [selectedButton, setSelectedButton] = useState<string | null>('Summary');
+  const [showKarContent, setShowKarContent] = useState(false);
 
-  // Set up color flashing effect
   useEffect(() => {
     const intervalId = setInterval(() => {
       setFlashingColor((prevColor) =>
@@ -57,15 +53,13 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const handleButtonClick = (buttonName: string) => {
-    setSelectedButton(buttonName); // Update selected button state
+    setSelectedButton(buttonName);
   };
 
-  // Toggle the Knowledge Assessment Results view
   const toggleKarContent = () => {
     setShowKarContent((prevShow) => !prevShow);
   };
 
-  // Chart Data and Configurations
   const pieData = [
     { name: 'Windows', value: 40 },
     { name: 'Linux', value: 30 },
@@ -109,7 +103,6 @@ const Dashboard: React.FC = () => {
           paddingTop: '20px',
         }}
       >
-        {/* Global Styles to Override Bar Hover Effect */}
         <GlobalStyles
           styles={{
             '.recharts-bar-rectangle:hover': {
@@ -118,38 +111,35 @@ const Dashboard: React.FC = () => {
           }}
         />
 
-        {/* Main Box */}
         <Box
-          onClick={toggleKarContent} // Use toggle function here
+          onClick={toggleKarContent}
           sx={{
             backgroundColor: '#171E40',
             border: '2px solid #AD46F7',
             width: '100%',
             maxWidth: '98vw',
-            height: '350px', // Maintained at 350px
+            height: '350px',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 5,
             position: 'relative',
             top: '10px',
-            cursor: 'pointer', // Change cursor to pointer
+            cursor: 'pointer',
           }}
         >
-          {/* Inner Container with Title and Conditional Icons */}
           <Box
             sx={{
               display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' }, // Responsive direction
+              flexDirection: { xs: 'column', sm: 'row' },
               justifyContent: 'space-between',
-              alignItems: { xs: 'flex-start', sm: 'center' }, // Align items based on screen size
+              alignItems: { xs: 'flex-start', sm: 'center' },
               width: '100%',
               padding: '0 20px',
               height: '100%',
-              gap: { xs: 0, sm: 0 }, // Add spacing in mobile view
+              gap: { xs: 0, sm: 0 },
             }}
           >
-            {/* Left Side: Title and Arrow Icon */}
             <Box
               sx={{
                 display: 'flex',
@@ -161,7 +151,7 @@ const Dashboard: React.FC = () => {
                 height: '40%',
                 marginTop: {xs: '10px'},
                 width: { xs:'90%' ,sm: '23%'},
-                flexDirection: { xs: 'column', sm: 'row' }, // Stack title and icon in mobile
+                flexDirection: { xs: 'column', sm: 'row' },
               }}
             >
               <Typography
@@ -170,13 +160,12 @@ const Dashboard: React.FC = () => {
                   fontWeight: 'bold',
                   fontSize: '1.2rem',
                   color: '#FFFFFF',
-                  textAlign: { xs: 'left', sm: 'inherit' }, // Align text in mobile
+                  textAlign: { xs: 'left', sm: 'inherit' },
                 }}
               >
                 Knowledge Assessment Results
               </Typography>
 
-              {/* Circular Container for Arrow Icon */}
               <Box
                 sx={{
                   width: '40px',
@@ -187,7 +176,7 @@ const Dashboard: React.FC = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginTop: { xs: 1, sm: 0 }, // Add top margin in mobile
+                  marginTop: { xs: 1, sm: 0 },
                 }}
               >
                 {showKarContent ? (
@@ -202,7 +191,6 @@ const Dashboard: React.FC = () => {
               </Box>
             </Box>
 
-            {/* Right Side: Conditional Progress Indicators */}
             {showKarContent && (
               <Box
                 sx={{
@@ -211,14 +199,13 @@ const Dashboard: React.FC = () => {
                   gap: 1,
                 }}
               >
-                {/* 65% Correct */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Box sx={{ position: 'relative', display: 'inline-flex' }}>
                     <CircularProgress
                       variant="determinate"
                       value={65}
-                      size={50} // Reduced size from 60 to 50
-                      thickness={3} // Reduced thickness from 4 to 3
+                      size={50}
+                      thickness={3}
                       sx={{ color: '#8B00FF' }}
                       aria-label="65% correct"
                     />
@@ -229,7 +216,7 @@ const Dashboard: React.FC = () => {
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                         color: '#8B00FF',
-                        fontSize: 40, // Reduced font size from 30 to 24
+                        fontSize: 40,
                       }}
                     />
                   </Box>
@@ -241,14 +228,13 @@ const Dashboard: React.FC = () => {
                   </Typography>
                 </Box>
 
-                {/* 20% Incorrect */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Box sx={{ position: 'relative', display: 'inline-flex' }}>
                     <CircularProgress
                       variant="determinate"
                       value={20}
-                      size={50} // Reduced size from 60 to 50
-                      thickness={3} // Reduced thickness from 4 to 3
+                      size={50}
+                      thickness={3}
                       sx={{ color: '#FE4A4B' }}
                       aria-label="20% incorrect"
                     />
@@ -259,7 +245,7 @@ const Dashboard: React.FC = () => {
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                         color: '#FE4A4B',
-                        fontSize: 40, // Reduced font size from 30 to 24
+                        fontSize: 40,
                       }}
                     />
                   </Box>
@@ -271,14 +257,13 @@ const Dashboard: React.FC = () => {
                   </Typography>
                 </Box>
 
-                {/* 15% Don't Know */}
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Box sx={{ position: 'relative', display: 'inline-flex' }}>
                     <CircularProgress
                       variant="determinate"
                       value={15}
-                      size={50} // Reduced size from 60 to 50
-                      thickness={3} // Reduced thickness from 4 to 3
+                      size={50}
+                      thickness={3}
                       sx={{ color: '#8B00FF' }}
                       aria-label="15% don't know"
                     />
@@ -289,7 +274,7 @@ const Dashboard: React.FC = () => {
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
                         color: '#8B00FF',
-                        fontSize: 40, // Reduced font size from 30 to 24
+                        fontSize: 40,
                       }}
                     />
                   </Box>
@@ -305,11 +290,9 @@ const Dashboard: React.FC = () => {
           </Box>
         </Box>
 
-        {/* Conditional Rendering */}
         {showKarContent ? (
           <Kar />
         ) : (
-          // Existing content under the main box
           <Box
             sx={{
               backgroundColor: '#040D30',
@@ -325,7 +308,6 @@ const Dashboard: React.FC = () => {
               gap: 4,
             }}
           >
-            {/* Button Container */}
             <Box
               sx={{
                 display: 'flex',
@@ -379,7 +361,6 @@ const Dashboard: React.FC = () => {
               </Button>
             </Box>
 
-            {/* Divider */}
             <Divider
               sx={{
                 width: '100%',
@@ -388,20 +369,18 @@ const Dashboard: React.FC = () => {
               }}
             />
 
-            {/* Conditional Rendering of Charts */}
             {selectedButton === 'Summary' && (
               <Box
                 sx={{
                   display: 'grid',
                   gridTemplateColumns: {
-                    xs: '1fr', // Single column on mobile
-                    sm: '1fr 1fr', // Two columns on tablets and larger screens
+                    xs: '1fr',
+                    sm: '1fr 1fr',
                   },
                   gap: 2,
                   width: '100%',
                 }}
               >
-                {/* Box 1 with Pie Chart */}
                 <Box
                   sx={{
                     backgroundColor: '#171E40',
@@ -415,7 +394,6 @@ const Dashboard: React.FC = () => {
                     padding: '10px',
                   }}
                 >
-                  {/* Separate Heading Box */}
                   <Box
                     sx={{
                       width: '100%',
@@ -436,7 +414,6 @@ const Dashboard: React.FC = () => {
                     </Typography>
                   </Box>
 
-                  {/* Pie Chart */}
                   <ResponsiveContainer width="100%" height="90%">
                     <PieChart aria-label="Distribution of Unpatched Assets by Operating System">
                       <Pie
@@ -461,7 +438,6 @@ const Dashboard: React.FC = () => {
                   </ResponsiveContainer>
                 </Box>
 
-                {/* Box 2 with Bar Chart */}
                 <Box
                   sx={{
                     backgroundColor: '#171E40',
@@ -475,7 +451,6 @@ const Dashboard: React.FC = () => {
                     padding: '10px',
                   }}
                 >
-                  {/* Separate Heading Box */}
                   <Box
                     sx={{
                       width: '100%',
@@ -496,7 +471,6 @@ const Dashboard: React.FC = () => {
                     </Typography>
                   </Box>
 
-                  {/* Bar Chart */}
                   <ResponsiveContainer width="100%" height="90%">
                     <BarChart
                       data={barData}
@@ -534,7 +508,6 @@ const Dashboard: React.FC = () => {
                   </ResponsiveContainer>
                 </Box>
 
-                {/* Box 3 with Donut Pie Chart */}
                 <Box
                   sx={{
                     backgroundColor: '#171E40',
@@ -548,7 +521,6 @@ const Dashboard: React.FC = () => {
                     padding: '10px',
                   }}
                 >
-                  {/* Separate Heading Box */}
                   <Box
                     sx={{
                       width: '100%',
@@ -569,7 +541,6 @@ const Dashboard: React.FC = () => {
                     </Typography>
                   </Box>
 
-                  {/* Donut Pie Chart */}
                   <ResponsiveContainer width="100%" height="90%">
                     <PieChart aria-label="Distribution of Patch, SOC & VAPT">
                       <Pie
@@ -595,7 +566,6 @@ const Dashboard: React.FC = () => {
                   </ResponsiveContainer>
                 </Box>
 
-                {/* Box 4 with Double Bar Chart */}
                 <Box
                   sx={{
                     backgroundColor: '#171E40',
@@ -609,7 +579,6 @@ const Dashboard: React.FC = () => {
                     padding: '10px',
                   }}
                 >
-                  {/* Separate Heading Box */}
                   <Box
                     sx={{
                       width: '100%',
@@ -630,7 +599,6 @@ const Dashboard: React.FC = () => {
                     </Typography>
                   </Box>
 
-                  {/* Double Bar Chart */}
                   <ResponsiveContainer width="100%" height="90%">
                     <BarChart
                       data={doubleBarData}
@@ -642,7 +610,6 @@ const Dashboard: React.FC = () => {
                       <Tooltip />
                       <Legend verticalAlign="top" height={36} />
 
-                      {/* Bar for Apps */}
                       <Bar
                         dataKey="Apps"
                         name="Apps"
@@ -657,7 +624,6 @@ const Dashboard: React.FC = () => {
                         />
                       </Bar>
 
-                      {/* Bar for Software */}
                       <Bar
                         dataKey="Software"
                         name="Software"
@@ -677,7 +643,6 @@ const Dashboard: React.FC = () => {
               </Box>
             )}
 
-            {/* Render content for CyberKarma GPT */}
             {selectedButton === 'CyberKarma GPT' && <CyberKarmaGPT />}
           </Box>
         )}

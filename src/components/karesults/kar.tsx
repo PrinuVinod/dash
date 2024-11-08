@@ -1,5 +1,3 @@
-// src/kar.tsx
-
 import React, { useState } from 'react';
 import {
   Box,
@@ -34,7 +32,6 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
     setIsAnimating(true); // Start the animation
     setExpandedBox(expandedBox === boxName ? null : boxName);
 
-    // Clear animation state after a delay matching transition duration
     setTimeout(() => setIsAnimating(false), 300);
   };
 
@@ -53,16 +50,15 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
         position: 'relative',
       }}
     >
-      {/* Top-Right Boxes */}
       <Box
         sx={{
           position: 'absolute',
           top: { xs: '10px', sm: '20px' },
           right: { xs: '10px', sm: '20px' },
           display: 'flex',
-          flexDirection: 'row', // Always row
-          gap: { xs: 0.5, sm: 1 }, // Adjust gap for smaller screens
-          width: 'auto', // Always auto to keep in one row
+          flexDirection: 'row',
+          gap: { xs: 0.5, sm: 1 },
+          width: 'auto',
           backgroundColor: 'transparent',
           zIndex: 1,
         }}
@@ -78,8 +74,8 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              gap: 0.5, // Smaller gap on mobile
-              padding: { xs: '6px 10px', sm: '8px 12px' }, // Reduced padding on mobile
+              gap: 0.5,
+              padding: { xs: '6px 10px', sm: '8px 12px' },
               borderRadius: '20px',
               backgroundColor: '#101942',
               justifyContent: 'center',
@@ -97,7 +93,6 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
         ))}
       </Box>
 
-      {/* Content Boxes */}
       <Box
         sx={{
           width: '100%',
@@ -242,18 +237,17 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
                   </>
                 )}
               </Box>
-              {/* Updated IconButton with Circular Faded Border */}
               <IconButton
                 sx={{
                   color: '#FFFFFF',
                   marginLeft: { xs: '10px', sm: '20px' },
                   padding: { xs: '4px', sm: 'default' },
-                  border: '1px solid rgba(255, 255, 255, 0.3)', // Faded border
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
                   borderRadius: '50%', // Circular shape
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)', // Optional: slightly faded background
-                  transition: 'background-color 0.3s ease', // Smooth transition for hover
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  transition: 'background-color 0.3s ease',
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Darker on hover
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
                   },
                 }}
               >
@@ -261,13 +255,11 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
               </IconButton>
             </Box>
 
-            {/* Conditionally render the Divider only when dropdown is open */}
             {expandedBox === box.name && <Divider sx={{ backgroundColor: '#36256C', my: 1 }} />}
 
-            {/* Dropdown content with animation */}
             <Box
               sx={{
-                maxHeight: expandedBox === box.name ? '300px' : '0px', // Increased maxHeight for better mobile viewing
+                maxHeight: expandedBox === box.name ? '300px' : '0px',
                 overflow: 'hidden',
                 transition: 'max-height 0.3s ease-in-out, padding 0.3s ease-in-out',
                 padding: expandedBox === box.name ? '10px' : '0px',
