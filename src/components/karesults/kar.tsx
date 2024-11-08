@@ -1,15 +1,20 @@
 // src/kar.tsx
 
 import React, { useState } from 'react';
-import { Box, Typography, IconButton, CircularProgress, Divider } from '@mui/material';
+import {
+  Box,
+  Typography,
+  IconButton,
+  CircularProgress,
+  Divider,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import SecurityIcon from '@mui/icons-material/Security';
-import ShieldIcon from '@mui/icons-material/Shield';
-import BuildIcon from '@mui/icons-material/Build';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import FlashOnIcon from '@mui/icons-material/FlashOn';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -20,22 +25,30 @@ interface KarProps {
 
 const Kar: React.FC<KarProps> = ({ onBack }) => {
   const [expandedBox, setExpandedBox] = useState<string | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleBoxClick = (boxName: string) => {
+    setIsAnimating(true); // Start the animation
     setExpandedBox(expandedBox === boxName ? null : boxName);
+
+    // Clear animation state after a delay matching transition duration
+    setTimeout(() => setIsAnimating(false), 300);
   };
 
   return (
     <Box
       sx={{
         width: '100%',
-        maxWidth: '95.5vw',
-        marginTop: '20px',
+        maxWidth: '96vw',
+        margin: '20px auto',
         borderRadius: 5,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: '20px',
+        padding: { xs: '10px', sm: '20px' },
         gap: 4,
         position: 'relative',
       }}
@@ -44,93 +57,64 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
       <Box
         sx={{
           position: 'absolute',
-          top: '20px',
-          right: '20px',
+          top: { xs: '10px', sm: '20px' },
+          right: { xs: '10px', sm: '20px' },
           display: 'flex',
-          gap: 1,
+          flexDirection: 'row', // Always row
+          gap: { xs: 0.5, sm: 1 }, // Adjust gap for smaller screens
+          width: 'auto', // Always auto to keep in one row
+          backgroundColor: 'transparent',
+          zIndex: 1,
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            padding: '8px 12px',
-            borderRadius: '20px',
-            backgroundColor: '#101942',
-          }}
-        >
-          <QuestionAnswerIcon sx={{ color: '#FFFFFF' }} />
-          <Typography variant="body2" sx={{ color: '#FFFFFF', fontWeight: 'bold' }}>
-            All Questions
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            padding: '8px 12px',
-            borderRadius: '20px',
-            backgroundColor: '#101942',
-          }}
-        >
-          <SecurityIcon sx={{ color: '#FFFFFF' }} />
-          <Typography variant="body2" sx={{ color: '#FFFFFF', fontWeight: 'bold' }}>
-            Vulnerability
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            padding: '8px 12px',
-            borderRadius: '20px',
-            backgroundColor: '#101942',
-          }}
-        >
-          <ShieldIcon sx={{ color: '#FFFFFF' }} />
-          <Typography variant="body2" sx={{ color: '#FFFFFF', fontWeight: 'bold' }}>
-            SOC
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            padding: '8px 12px',
-            borderRadius: '20px',
-            backgroundColor: '#101942',
-          }}
-        >
-          <BuildIcon sx={{ color: '#FFFFFF' }} />
-          <Typography variant="body2" sx={{ color: '#FFFFFF', fontWeight: 'bold' }}>
-            Hardening
-          </Typography>
-        </Box>
+        {[
+          { icon: <QuestionAnswerIcon sx={{ color: '#FFFFFF', fontSize: isMobile ? 20 : 24 }} />, label: 'All Questions' },
+          { icon: <CheckCircleIcon sx={{ color: '#A865ED', fontSize: isMobile ? 20 : 24 }} />, label: 'Vulnerability' },
+          { icon: <CancelIcon sx={{ color: '#FFA500', fontSize: isMobile ? 20 : 24 }} />, label: 'SOC' },
+          { icon: <FlashOnIcon sx={{ color: '#B0B0B0', fontSize: isMobile ? 20 : 24 }} />, label: 'Hardening' },
+        ].map((item, index) => (
+          <Box
+            key={index}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5, // Smaller gap on mobile
+              padding: { xs: '6px 10px', sm: '8px 12px' }, // Reduced padding on mobile
+              borderRadius: '20px',
+              backgroundColor: '#101942',
+              justifyContent: 'center',
+              minWidth: 'auto',
+            }}
+          >
+            {item.icon}
+            <Typography
+              variant={isMobile ? 'caption' : 'body2'}
+              sx={{ color: '#FFFFFF', fontWeight: 'bold', whiteSpace: 'nowrap' }}
+            >
+              {item.label}
+            </Typography>
+          </Box>
+        ))}
       </Box>
 
       {/* Content Boxes */}
       <Box
         sx={{
           width: '100%',
-          padding: '20px',
+          padding: { xs: '10px', sm: '20px' },
           borderRadius: 5,
-          marginTop: '70px',
+          marginTop: { xs: '60px', sm: '70px' },
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
         }}
       >
-        {/* Dynamic content box with dropdown feature */}
-        {[ 
+        {[
           { name: 'Human Layer', value: 75 },
           { name: 'Perimeter Security', value: 80 },
           { name: 'Network Security', value: 50 },
           { name: 'Endpoint Security', value: 70 },
-          { name: 'Application Security', value: 80 }
+          { name: 'Application Security', value: 80 },
         ].map((box, index) => (
           <Box
             key={index}
@@ -150,13 +134,14 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                height: '60px',
+                height: { xs: '50px', sm: '60px' },
+                cursor: 'pointer',
               }}
               onClick={() => handleBoxClick(box.name)}
             >
               <Box
                 sx={{
-                  width: '4px',
+                  width: '9px',
                   backgroundColor: '#AD46F7',
                   position: 'absolute',
                   left: 0,
@@ -164,12 +149,31 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
                   bottom: 0,
                 }}
               />
-              <Typography variant="body1" sx={{ color: '#FFFFFF', paddingLeft: '10px' }}>
+              <Typography
+                variant={isMobile ? 'subtitle2' : 'body1'}
+                sx={{ color: '#FFFFFF', paddingLeft: '10px', flex: 1 }}
+              >
                 {box.name}
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                {/* Show only Vulnerability label when expanded, otherwise all labels */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: '#2B3563', padding: '15px 15px', borderRadius: 1 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: { xs: 1, sm: 3 },
+                  flexWrap: 'wrap',
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    backgroundColor: '#2B3563',
+                    padding: { xs: '8px 10px', sm: '15px 15px' },
+                    borderRadius: 1,
+                  }}
+                >
                   <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                     <CircularProgress
                       variant="determinate"
@@ -177,53 +181,159 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
                       sx={{
                         color: box.value > 70 ? '#FF0000' : '#FFD700',
                         position: 'absolute',
-                        left: -6,
+                        left: isMobile ? -4 : -6,
                         zIndex: 1,
                       }}
-                      size={40}
+                      size={isMobile ? 30 : 40}
                     />
-                    <CheckCircleIcon sx={{ color: box.value > 70 ? '#FF0000' : '#FFD700', fontSize: 30, zIndex: 2 }} />
+                    <CheckCircleIcon
+                      sx={{
+                        color: box.value > 70 ? '#FF0000' : '#FFD700',
+                        fontSize: isMobile ? 20 : 30,
+                        zIndex: 2,
+                      }}
+                    />
                   </Box>
-                  <Typography variant="body2" sx={{ color: '#FFFFFF' }}>Vulnerability</Typography>
+                  <Typography
+                    variant={isMobile ? 'caption' : 'body2'}
+                    sx={{ color: '#FFFFFF' }}
+                  >
+                    Vulnerability
+                  </Typography>
                 </Box>
-                {!expandedBox && (
+                {expandedBox !== box.name && (
                   <>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: '#2B3563', padding: '15px 15px', borderRadius: 1 }}>
-                      <CancelIcon sx={{ color: '#FFA500', fontSize: 24 }} />
-                      <Typography variant="body2" sx={{ color: '#FFFFFF' }}>SOC</Typography>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        backgroundColor: '#2B3563',
+                        padding: { xs: '8px 10px', sm: '15px 15px' },
+                        borderRadius: 1,
+                      }}
+                    >
+                      <CancelIcon sx={{ color: '#FFA500', fontSize: isMobile ? 20 : 24 }} />
+                      <Typography
+                        variant={isMobile ? 'caption' : 'body2'}
+                        sx={{ color: '#FFFFFF' }}
+                      >
+                        SOC
+                      </Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: '#2B3563', padding: '15px 15px', borderRadius: 1 }}>
-                      <FlashOnIcon sx={{ color: '#B0B0B0', fontSize: 24 }} />
-                      <Typography variant="body2" sx={{ color: '#FFFFFF' }}>Hardening</Typography>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        backgroundColor: '#2B3563',
+                        padding: { xs: '8px 10px', sm: '15px 15px' },
+                        borderRadius: 1,
+                      }}
+                    >
+                      <FlashOnIcon sx={{ color: '#B0B0B0', fontSize: isMobile ? 20 : 24 }} />
+                      <Typography
+                        variant={isMobile ? 'caption' : 'body2'}
+                        sx={{ color: '#FFFFFF' }}
+                      >
+                        Hardening
+                      </Typography>
                     </Box>
                   </>
                 )}
               </Box>
-              <IconButton sx={{ color: '#FFFFFF' }}>
+              {/* Updated IconButton with Circular Faded Border */}
+              <IconButton
+                sx={{
+                  color: '#FFFFFF',
+                  marginLeft: { xs: '10px', sm: '20px' },
+                  padding: { xs: '4px', sm: 'default' },
+                  border: '1px solid rgba(255, 255, 255, 0.3)', // Faded border
+                  borderRadius: '50%', // Circular shape
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)', // Optional: slightly faded background
+                  transition: 'background-color 0.3s ease', // Smooth transition for hover
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Darker on hover
+                  },
+                }}
+              >
                 {expandedBox === box.name ? <ArrowDropDownIcon /> : <ArrowForwardIosIcon />}
               </IconButton>
             </Box>
 
             <Divider sx={{ backgroundColor: '#36256C', my: 1 }} />
 
-            {/* Dropdown content */}
-            {expandedBox === box.name && (
-              <Box sx={{ padding: '10px', borderRadius: '0 0 10px 10px', color: '#FFFFFF' }}>
-                <Box sx={{ display: 'flex', gap: 2, marginTop: '10px', marginBottom: '10px' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: '#2B3563', borderRadius: 1, padding: '8px 12px' }}>
-                    <StarIcon sx={{ color: '#FFD700' }} />
-                    <Typography variant="body2" sx={{ color: '#FFFFFF', fontWeight: 'bold' }}>Top 5</Typography>
+            {/* Dropdown content with animation */}
+            <Box
+              sx={{
+                maxHeight: expandedBox === box.name ? '300px' : '0px', // Increased maxHeight for better mobile viewing
+                overflow: 'hidden',
+                transition: 'max-height 0.3s ease-in-out',
+                padding: expandedBox === box.name ? '10px' : '0px',
+              }}
+            >
+              {expandedBox === box.name && (
+                <Box sx={{ borderRadius: '0 0 10px 10px', color: '#FFFFFF' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: 2,
+                      marginTop: '10px',
+                      marginBottom: '10px',
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        backgroundColor: '#2B3563',
+                        borderRadius: 1,
+                        padding: '8px 12px',
+                      }}
+                    >
+                      <StarIcon sx={{ color: '#FFD700', fontSize: isMobile ? 20 : 24 }} />
+                      <Typography
+                        variant={isMobile ? 'caption' : 'body2'}
+                        sx={{ color: '#FFFFFF', fontWeight: 'bold' }}
+                      >
+                        Top 5
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        backgroundColor: '#2B3563',
+                        borderRadius: 1,
+                        padding: '8px 12px',
+                      }}
+                    >
+                      <StarBorderIcon
+                        sx={{ color: '#FFD700', fontSize: isMobile ? 20 : 24 }}
+                      />
+                      <Typography
+                        variant={isMobile ? 'caption' : 'body2'}
+                        sx={{ color: '#FFFFFF', fontWeight: 'bold' }}
+                      >
+                        Enabler
+                      </Typography>
+                    </Box>
                   </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, backgroundColor: '#2B3563', borderRadius: 1, padding: '8px 12px' }}>
-                    <StarBorderIcon sx={{ color: '#FFD700' }} />
-                    <Typography variant="body2" sx={{ color: '#FFFFFF', fontWeight: 'bold' }}>Enabler</Typography>
-                  </Box>
+                  <Typography variant={isMobile ? 'caption' : 'body2'}>
+                    Pinochle.AI is not your average cybersecurity firm—we defy convention and dare to
+                    tread where others fear. Our elite operatives embark on deep infiltration into the
+                    darkest corners of the web, preemptively neutralizing potential threats before
+                    they strike. We lead the charge on the offensive, striking fear into the hearts
+                    of cyber adversaries and neutralizing threats. Our globally stationed cybersecurity
+                    insurgents respond swiftly and decisively to emerging threats, ensuring
+                    unparalleled protection for your digital assets.
+                  </Typography>
                 </Box>
-                <Typography variant="body2">
-                  This is a detailed explanation about {box.name}. It includes insights and descriptions relevant to this section’s content.
-                </Typography>
-              </Box>
-            )}
+              )}
+            </Box>
           </Box>
         ))}
       </Box>
