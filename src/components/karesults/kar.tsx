@@ -261,14 +261,15 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
               </IconButton>
             </Box>
 
-            <Divider sx={{ backgroundColor: '#36256C', my: 1 }} />
+            {/* Conditionally render the Divider only when dropdown is open */}
+            {expandedBox === box.name && <Divider sx={{ backgroundColor: '#36256C', my: 1 }} />}
 
             {/* Dropdown content with animation */}
             <Box
               sx={{
                 maxHeight: expandedBox === box.name ? '300px' : '0px', // Increased maxHeight for better mobile viewing
                 overflow: 'hidden',
-                transition: 'max-height 0.3s ease-in-out',
+                transition: 'max-height 0.3s ease-in-out, padding 0.3s ease-in-out',
                 padding: expandedBox === box.name ? '10px' : '0px',
               }}
             >
