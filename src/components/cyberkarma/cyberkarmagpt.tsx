@@ -11,16 +11,19 @@ import {
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import SendIcon from '@mui/icons-material/Send';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add'; // Import the Add icon
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+
+// Define supported image MIME types
+const SUPPORTED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 
 interface Message {
   id: number;
   type: 'ai' | 'user';
   content?: string;
   file?: File;
+  fileUrl?: string; // URL to display the uploaded image
   timestamp: string;
 }
 
@@ -66,6 +69,11 @@ const CyberKarmaGPT: React.FC = () => {
           id: messages.length + 2,
           type: 'ai',
           content: 'This is a simulated AI response.',
+          // Optionally, include an image in AI response
+          /*
+          file: new File([], 'ai-image.png', { type: 'image/png' }),
+          fileUrl: 'https://via.placeholder.com/150', // Replace with actual image URL
+          */
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
         setMessages((prevMessages) => [...prevMessages, aiResponse]);
@@ -91,30 +99,79 @@ const CyberKarmaGPT: React.FC = () => {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      const newMessage: Message = {
-        id: messages.length + 1,
-        type: 'user',
-        file: file,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      };
-      setMessages([...messages, newMessage]);
+      const isImage = SUPPORTED_IMAGE_TYPES.includes(file.type);
 
-      // Simulate AI response
-      setTimeout(() => {
-        const aiResponse: Message = {
-          id: messages.length + 2,
-          type: 'ai',
-          content: 'Received your file!',
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newMessage: Message = {
+          id: messages.length + 1,
+          type: 'user',
+          file: file,
+          fileUrl: isImage ? (reader.result as string) : undefined, // Store the image URL if it's an image
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
-        setMessages((prevMessages) => [...prevMessages, aiResponse]);
-      }, 1000);
+        setMessages([...messages, newMessage]);
+
+        // Simulate AI response
+        setTimeout(() => {
+          const aiResponse: Message = {
+            id: messages.length + 2,
+            type: 'ai',
+            content: 'Received your file!',
+            // Optionally, include an image in AI response
+            /*
+            file: new File([], 'ai-response-image.png', { type: 'image/png' }),
+            fileUrl: 'https://via.placeholder.com/150', // Replace with actual image URL
+            */
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          };
+          setMessages((prevMessages) => [...prevMessages, aiResponse]);
+        }, 1000);
+      };
+
+      if (isImage) {
+        reader.readAsDataURL(file); // Read the image file as a data URL
+      } else {
+        // For non-image files, no need to read as data URL
+        reader.onloadend();
+      }
 
       // Reset file input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
     }
+  };
+
+  // Helper function to render message content
+  const renderMessageContent = (message: Message) => {
+    if (message.content) {
+      return <Typography variant="body1">{message.content}</Typography>;
+    } else if (message.file && message.fileUrl) {
+      // If the file is an image, display it
+      if (SUPPORTED_IMAGE_TYPES.includes(message.file.type)) {
+        return (
+          <Box>
+            <img
+              src={message.fileUrl}
+              alt={message.file.name}
+              style={{ maxWidth: '100%', borderRadius: '8px', marginTop: '8px' }}
+            />
+            <Typography variant="body2" sx={{ color: '#ADFF2F', marginTop: '4px' }}>
+              Uploaded Image: {message.file.name}
+            </Typography>
+          </Box>
+        );
+      } else {
+        // For non-image files, display the file name
+        return (
+          <Typography variant="body1" sx={{ color: '#ADFF2F' }}>
+            Uploaded File: {message.file.name}
+          </Typography>
+        );
+      }
+    }
+    return null;
   };
 
   return (
@@ -145,11 +202,13 @@ const CyberKarmaGPT: React.FC = () => {
             <Avatar
               src={
                 message.type === 'ai'
-                  ? '/path/to/ai-avatar.png' // Replace with actual path
-                  : '/path/to/user-avatar.png' // Replace with actual path
+                  ? '/vite.svg' // Path to AI avatar in public folder
+                  : '/user.png' // Path to User avatar in public folder
               }
               alt={message.type === 'ai' ? 'AI Avatar' : 'User Avatar'}
               sx={{
+                width: 40,
+                height: 40,
                 margin: message.type === 'ai' ? '0 8px 0 0' : '0 0 0 8px',
               }}
             />
@@ -159,7 +218,7 @@ const CyberKarmaGPT: React.FC = () => {
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                alignItems: 'center',
+                alignItems: 'flex-start',
               }}
             >
               {/* Edit Icon for User Messages */}
@@ -186,15 +245,8 @@ const CyberKarmaGPT: React.FC = () => {
                 }}
               >
                 {/* Message Content */}
-                {message.content && (
-                  <Typography variant="body1">{message.content}</Typography>
-                )}
-                {/* Display File Name if a file is uploaded */}
-                {message.file && (
-                  <Typography variant="body1" sx={{ color: '#ADFF2F' }}>
-                    Uploaded File: {message.file.name}
-                  </Typography>
-                )}
+                {renderMessageContent(message)}
+
                 <Typography
                   variant="caption"
                   sx={{
@@ -279,7 +331,10 @@ const CyberKarmaGPT: React.FC = () => {
           sx={{
             backgroundColor: '#384A9C',
             borderRadius: '8px',
-            color: '#FFFFFF',
+            // Target the input element to set text color to white
+            '& .MuiInputBase-input': {
+              color: '#FFFFFF',
+            },
           }}
           InputProps={{
             style: {
