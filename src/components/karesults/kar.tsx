@@ -103,7 +103,7 @@ const Kar: React.FC<KarProps> = ({ onBack }) => {
           width: '100%',
           padding: { xs: '10px', sm: '20px' },
           borderRadius: 5,
-          marginTop: { xs: '60px', sm: '70px' },
+          marginTop: { xs: '60px', sm: '50px' },
           display: 'flex',
           flexDirection: 'column',
           gap: 2,

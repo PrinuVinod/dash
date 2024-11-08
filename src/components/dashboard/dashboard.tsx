@@ -140,11 +140,13 @@ const Dashboard: React.FC = () => {
           <Box
             sx={{
               display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' }, // Responsive direction
               justifyContent: 'space-between',
-              alignItems: 'center',
+              alignItems: { xs: 'flex-start', sm: 'center' }, // Align items based on screen size
               width: '100%',
               padding: '0 20px',
               height: '100%',
+              gap: { xs: 0, sm: 0 }, // Add spacing in mobile view
             }}
           >
             {/* Left Side: Title and Arrow Icon */}
@@ -157,9 +159,20 @@ const Dashboard: React.FC = () => {
                 borderRadius: 1,
                 padding: '10px 20px',
                 height: '40%',
+                marginTop: {xs: '10px'},
+                width: { xs:'90%' ,sm: '23%'},
+                flexDirection: { xs: 'column', sm: 'row' }, // Stack title and icon in mobile
               }}
             >
-              <Typography variant="h6" sx={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#FFFFFF' }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 'bold',
+                  fontSize: '1.2rem',
+                  color: '#FFFFFF',
+                  textAlign: { xs: 'left', sm: 'inherit' }, // Align text in mobile
+                }}
+              >
                 Knowledge Assessment Results
               </Typography>
 
@@ -174,12 +187,17 @@ const Dashboard: React.FC = () => {
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  marginTop: { xs: 1, sm: 0 }, // Add top margin in mobile
                 }}
               >
                 {showKarContent ? (
-                  <KeyboardArrowDownIcon sx={{ fontSize: 24, color: '#FFFFFF' }} />
+                  <KeyboardArrowDownIcon
+                    sx={{ fontSize: 24, color: '#FFFFFF' }}
+                  />
                 ) : (
-                  <KeyboardArrowUpIcon sx={{ fontSize: 24, color: '#FFFFFF' }} />
+                  <KeyboardArrowUpIcon
+                    sx={{ fontSize: 24, color: '#FFFFFF' }}
+                  />
                 )}
               </Box>
             </Box>
@@ -190,7 +208,7 @@ const Dashboard: React.FC = () => {
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 3, // Reduced gap for better spacing
+                  gap: 1,
                 }}
               >
                 {/* 65% Correct */}
@@ -215,7 +233,10 @@ const Dashboard: React.FC = () => {
                       }}
                     />
                   </Box>
-                  <Typography variant="body3" sx={{ color: '#FFFFFF', fontSize: '0.875rem' }}>
+                  <Typography
+                    variant="body3"
+                    sx={{ color: '#FFFFFF', fontSize: '0.875rem' }}
+                  >
                     65% correct
                   </Typography>
                 </Box>
@@ -242,7 +263,10 @@ const Dashboard: React.FC = () => {
                       }}
                     />
                   </Box>
-                  <Typography variant="body3" sx={{ color: '#FFFFFF', fontSize: '0.875rem' }}>
+                  <Typography
+                    variant="body3"
+                    sx={{ color: '#FFFFFF', fontSize: '0.875rem' }}
+                  >
                     20% incorrect
                   </Typography>
                 </Box>
@@ -269,7 +293,10 @@ const Dashboard: React.FC = () => {
                       }}
                     />
                   </Box>
-                  <Typography variant="body3" sx={{ color: '#FFFFFF', fontSize: '0.875rem' }}>
+                  <Typography
+                    variant="body3"
+                    sx={{ color: '#FFFFFF', fontSize: '0.875rem' }}
+                  >
                     15% don't know
                   </Typography>
                 </Box>
@@ -287,7 +314,7 @@ const Dashboard: React.FC = () => {
             sx={{
               backgroundColor: '#040D30',
               border: '2px solid #AD46F7',
-              width: '100%',
+              width: { xs: '88%', sm: '100%' },
               maxWidth: '95.5vw',
               marginTop: '20px',
               borderRadius: 5,
@@ -340,7 +367,9 @@ const Dashboard: React.FC = () => {
                   textTransform: 'none',
                   '&:hover': {
                     backgroundColor:
-                      selectedButton === 'CyberKarma GPT' ? '#4C66D1' : '#040D30',
+                      selectedButton === 'CyberKarma GPT'
+                        ? '#4C66D1'
+                        : '#040D30',
                   },
                   width: '200px',
                   height: '50px',
@@ -364,7 +393,10 @@ const Dashboard: React.FC = () => {
               <Box
                 sx={{
                   display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
+                  gridTemplateColumns: {
+                    xs: '1fr', // Single column on mobile
+                    sm: '1fr 1fr', // Two columns on tablets and larger screens
+                  },
                   gap: 2,
                   width: '100%',
                 }}
@@ -646,14 +678,12 @@ const Dashboard: React.FC = () => {
             )}
 
             {/* Render content for CyberKarma GPT */}
-            {selectedButton === 'CyberKarma GPT' && (
-              <CyberKarmaGPT />
-            )}
+            {selectedButton === 'CyberKarma GPT' && <CyberKarmaGPT />}
           </Box>
         )}
       </Box>
     </ThemeProvider>
   );
-}
+};
 
 export default Dashboard;
